@@ -1,0 +1,13 @@
+rclone installation:
+    https://rclone.org/install/
+    
+Error while building the container Solutions:
+    https://stackoverflow.com/questions/72441758/typeerror-descriptors-cannot-not-be-created-directly
+    https://protobuf.dev/installation/
+    https://stackoverflow.com/questions/50840511/google-cloud-import-storage-cannot-import-storage
+    https://stackoverflow.com/questions/69195731/dockerized-apache-beam-returns-no-id-provided
+    
+Describe the Dataflow/SDK harness problem
+"serializing (or pickling) the code of the transforms. The serialized content is deserialized on the workers. If the runtime worker environment significantly differs from the launch environment, runtime errors might occur for the following reasons"
+    https://cloud.google.com/dataflow/docs/guides/troubleshoot-custom-container
+    https://beam.apache.org/documentation/sdks/python-pipeline-dependencies/#make-the-launch-environment-compatible-with-the-runtime-environment

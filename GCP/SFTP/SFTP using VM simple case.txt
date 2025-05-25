@@ -1,0 +1,42 @@
+Bucket:
+	enable the versioning in the bucket
+Permissions:
+	gcloud iam service-accounts add-iam-policy-binding sftp-service-account@omar-ismail-test-project.iam.gserviceaccount.com   --member="user:omar.ismail@premier.cloudypedia.com"   --role="roles/iam.serviceAccountTokenCreator"
+	
+Establish connection:
+	sftp  -i my-ssh-key USER@IP # start connection
+	yes # for continue connection
+	put ./FILE /home/USER/FOLDER # for moving file
+
+startup script:
+	cd /home/USER
+	mkdir sftp_files
+	sudo chown -R USER:USER /home/USER/folder
+	sudo apt install ufw
+	sudo ufw allow 22
+	sudo apt-get update -y
+	sudo apt-get install inotify-tools -y
+	inotifywait -m -e close_write --format '%w%f' /home/USER/FOLDER | while read FILE
+	do
+		echo "Uploading $FILE to gs://BUCKET/sftp"
+		if gsutil -i SERVICE_ACCOUNT cp "$FILE" "gs://BUCKET/sftp"; then
+			echo "Uploaded. Deleting $FILE"
+			rm "$FILE"
+		else
+			echo "Upload failed for $FILE"
+		fi
+	done >> /home/USER/inotify-upload.log 2>&1 &
+
+DataFlow pipeline Code
+	python pipeline.py   --runner=DataflowRunner   --project=omar-ismail-test-project   --region=us-central1   --temp_location=gs://BUCKET/tmp   --staging_location=gs://remove_later123/stage   --experiments=use_runner_v2   --sdk_container_image=gcr.io/omar-ismail-test-project/beam-rclone-image:2.53.0-py10 --job_name=sftp-test-load-balance-3 --num_workers=4 --max_num_workers=4
+	
+
+gcs to BQ:
+you need to create pub/sub that trigger a command
+the event used is OBJECT_FINALIZE for new/overwriting file in bucket
+	gcloud storage buckets notifications create gs://BUCKET --topic=sftp_bucket_topic
+
+
+## the pub/sub message sample
+parsing b'{\n  "kind": "storage#object",\n  "id": "remove_later123/sftp/data.csv/1746348194278210",\n  "selfLink": "https://www.googleapis.com/storage/v1/b/remove_later123/o/sftp%2Fdata.csv",\n  "name": "sftp/data.csv",\n  "bucket": "remove_later123",\n  "generation": "1746348194278210",\n  "metageneration": "1",\n  "contentType": "text/csv",\n  "timeCreated": "2025-05-04T08:43:14.347Z",\n  "updated": "2025-05-04T08:43:14.347Z",\n  "storageClass": "NEARLINE",\n  "timeStorageClassUpdated": "2025-05-04T08:43:14.347Z",\n  "size": "57",\n  "md5Hash": "zkCA1aB2mcG2bao16vx4pg==",\n  "mediaLink": "https://storage.googleapis.com/download/storage/v1/b/remove_later123/o/sftp%2Fdata.csv?generation=1746348194278210&alt=media",\n  "crc32c": "ivLAVQ==",\n  "etag": "CMLWmP61iY0DEAE="\n}\n'
+

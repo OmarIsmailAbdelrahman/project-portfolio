@@ -33,8 +33,7 @@ A local Airflow instance runs a DAG that launches both Flex templates. I leverag
 
 ## Next Steps
 
-- Introduce automated monitoring & alerts (Cloud Monitoring) for pipeline health  
-- Add end-to-end integration tests with ephemeral buckets  
+- Enhance SFTP performance direct transfer data to GCS, as it currently use two steps from fetching then pushing 
 - Expose pipeline parameters (windowing, worker count) for different workloads  
 - Extend the DAG with data-quality checks and downstream reporting  
-- Evaluate managed transfer services (e.g. Cloud Transfer) as an alternative to SFTP/RClone  
+

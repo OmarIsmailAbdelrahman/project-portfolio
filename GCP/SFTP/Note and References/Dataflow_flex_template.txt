@@ -1,0 +1,26 @@
+Flex Template 
+	flex template is used for triggering dataflow, it's the recommended method, the pipeline is packaged as docker image in artifact registry with a template specification file in cloud storage which container a pointer to the docker image "CICD".
+	
+	Classic templates
+		older version of dataflow templates that contains the pipeline graph in json serialization form, 
+		flex comparsion:
+			- it requires value provider interface which is not always supported for data sources and sinks, which is not required in flex.
+			- it's a static graph, and flex is dynamic as you can change the parameters.
+			- Flex can preform preprocessing during pipeline construction
+			
+	benefits:
+	1. seperate design and deployment, as it can be deployed any time
+	2. have parameters to set when deployed
+	3. no need for development environment or any pipeline dependencies to install
+	4. It's a code artifact that stored in source control repository, and used in CICD pipelines
+
+Structure of Flex Template:
+	it contains:
+		- src package "source code for pipeline"
+		- launcher file "to submit the pipeline to runner"
+	
+	
+	
+Main reference: https://github.com/GoogleCloudPlatform/python-docs-samples/tree/main/dataflow/flex-templates/pipeline_with_dependencies
+https://cloud.google.com/dataflow/docs/concepts/dataflow-templates
+https://github.com/GoogleCloudPlatform/DataflowTemplates
