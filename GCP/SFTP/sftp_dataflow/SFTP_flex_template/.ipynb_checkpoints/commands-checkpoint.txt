@@ -1,0 +1,7 @@
+gcloud dataflow flex-template build gs://remove_later123/templates/sftp-to-gcs-pipeline.json \
+    --image-gcr-path "gcr.io/omar-ismail-test-project/beam-rclone-image:2.53.0-py1" \
+    --sdk-language "PYTHON" \
+    --metadata-file "metadata.json" \
+    --py-path "pipeline.py" \
+    --flex-template-base-image "PYTHON3" \
+    --env "FLEX_TEMPLATE_PYTHON_PY_FILE=pipeline.py"

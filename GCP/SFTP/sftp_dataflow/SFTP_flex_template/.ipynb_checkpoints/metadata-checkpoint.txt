@@ -1,0 +1,61 @@
+{
+  "name": "SFTP to GCS Pipeline",
+  "description": "A pipeline that fetches files from SFTP and uploads them to GCS",
+  "parameters": [
+    {
+      "name": "project",
+      "label": "GCP Project ID",
+      "helpText": "Google Cloud Project ID",
+      "defaultValue": "omar-ismail-test-project"
+    },
+    {
+      "name": "secret_name",
+      "label": "Secret Name",
+      "helpText": "Secret Manager secret name for SFTP key",
+      "defaultValue": "sftp_default_key"
+    },
+    {
+      "name": "rclone_remote",
+      "label": "Rclone Remote Name",
+      "helpText": "Name for the rclone remote configuration",
+      "defaultValue": "myvm"
+    },
+    {
+      "name": "remote_dir",
+      "label": "Remote Directory",
+      "helpText": "Directory path on the SFTP server",
+      "defaultValue": "customer_test_data"
+    },
+    {
+      "name": "host",
+      "label": "SFTP Host",
+      "helpText": "SFTP server hostname or IP",
+      "defaultValue": "146.148.62.199"
+    },
+    {
+      "name": "user",
+      "label": "SFTP Username",
+      "helpText": "Username for SFTP authentication",
+      "defaultValue": "omar_ismail"
+    },
+    {
+      "name": "port",
+      "label": "SFTP Port",
+      "helpText": "Port for SFTP connection",
+      "defaultValue": "22"
+    },
+    {
+      "name": "bucket_name",
+      "label": "Output GCS Bucket",
+      "helpText": "GCS bucket to store the fetched files",
+      "defaultValue": "new_remove"
+    },
+    {
+      "name": "prefix",
+      "label": "Output Prefix",
+      "helpText": "Prefix for output files in GCS bucket",
+      "defaultValue": "raw",
+      "isOptional": true
+    }
+  ]
+}
